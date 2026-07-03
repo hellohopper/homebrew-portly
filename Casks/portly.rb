@@ -1,6 +1,6 @@
 cask "portly" do
-  version "0.2.0"
-  sha256 "47e6164b4338b671f9ba6adf579cbfd7544778df4df0fe4d644e6c3ffaf2546d"
+  version "0.3.1"
+  sha256 "22109b0831cadd475510c3dfcf2079828d514f8cba548fddcd687baf6c3b6a09"
 
   url "https://github.com/hellohopper/portly/releases/download/v#{version}/Portly.dmg"
   name "Portly"
