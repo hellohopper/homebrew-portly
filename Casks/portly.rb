@@ -12,6 +12,13 @@ cask "portly" do
   app "Portly.app"
   binary "#{appdir}/Portly.app/Contents/MacOS/portly-cli", target: "portly"
 
+  # Releases are ad-hoc signed (no notarization), so strip quarantine or
+  # Gatekeeper blocks the first launch of both the app and the CLI.
+  postflight do
+    system_command "/usr/bin/xattr",
+                   args: ["-dr", "com.apple.quarantine", "#{appdir}/Portly.app"]
+  end
+
   zap trash: [
     "~/Library/Preferences/dev.hellohopper.portly.plist",
   ]
