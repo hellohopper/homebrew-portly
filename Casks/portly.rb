@@ -12,11 +12,15 @@ cask "portly" do
   app "Portly.app"
   binary "#{appdir}/Portly.app/Contents/MacOS/portly-cli", target: "portly"
 
-  # Releases are ad-hoc signed (no notarization), so strip quarantine or
-  # Gatekeeper blocks the first launch of both the app and the CLI.
+  # Releases are ad-hoc signed (no notarization). Two consequences on install:
+  # quarantine makes Gatekeeper block the first launch, and on Apple Silicon an
+  # ad-hoc signature minted on the CI machine stalls dyld's policy assessment
+  # forever on other machines. Strip quarantine and re-sign locally.
   postflight do
     system_command "/usr/bin/xattr",
                    args: ["-dr", "com.apple.quarantine", "#{appdir}/Portly.app"]
+    system_command "/usr/bin/codesign",
+                   args: ["--force", "--deep", "--sign", "-", "#{appdir}/Portly.app"]
   end
 
   zap trash: [
