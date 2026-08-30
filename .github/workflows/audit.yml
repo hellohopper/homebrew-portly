@@ -13,6 +13,8 @@ jobs:
       - uses: actions/checkout@v4
       - run: brew style Casks/portly.rb
       - name: Tap this checkout and audit
+        env:
+          HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           brew tap hellohopper/portly "$GITHUB_WORKSPACE"
           brew audit --cask --online hellohopper/portly/portly
