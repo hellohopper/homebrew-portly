@@ -1,0 +1,18 @@
+name: Audit cask
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  audit:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew style Casks/portly.rb
+      - name: Tap this checkout and audit
+        run: |
+          brew tap hellohopper/portly "$GITHUB_WORKSPACE"
+          brew audit --cask --online hellohopper/portly/portly

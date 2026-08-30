@@ -7,7 +7,13 @@ cask "portly" do
   desc "Menu bar app for tracking local port usage"
   homepage "https://github.com/hellohopper/portly"
 
-  auto_updates false
+  livecheck do
+    url :url
+    strategy :github_latest
+  end
+
+  auto_updates true
+  depends_on macos: :ventura
 
   app "Portly.app"
   binary "#{appdir}/Portly.app/Contents/MacOS/portly-cli", target: "portly"
@@ -23,7 +29,11 @@ cask "portly" do
                    args: ["--force", "--deep", "--sign", "-", "#{appdir}/Portly.app"]
   end
 
+  uninstall quit: "dev.hellohopper.portly"
+
   zap trash: [
+    "~/Library/Application Support/Portly",
     "~/Library/Preferences/dev.hellohopper.portly.plist",
+    "~/Library/Saved Application State/dev.hellohopper.portly.savedState",
   ]
 end
